@@ -5,7 +5,7 @@ import java.util.Random;
 public class Tablero {
     private Node ini = addX();
     private Node f = null;
-    private String dire=null;
+    private String dire="";
     private boolean isO=true;
     private Random r = new Random();
 
@@ -107,11 +107,81 @@ public class Tablero {
     }
 
     public void inicioBusqueda(){
+        verX(ini);
+        verY(ini);
 
-
-
-
+        if (!dire.equals("")){
+            sim(ini);
+        } else {
+            System.out.println("BOBO HPTA");
+        }
     }
+
+    public Node nextNode(Node act){
+        switch (dire) {
+            case "ARRIBA":
+                return act.getArriba();
+            case "ABAJO":
+                return act.getAbajo();
+            case "DERECHA":
+                return act.getDerecha();
+            case "IZQ":
+                return act.getIzquierda();
+            default:
+                return null;
+        }
+    }
+
+
+
+    public void sim(Node act){
+        if (act.getType().equals("X")){
+            System.out.println("NO SE PUEDE");
+            dire = "";
+        } else if (act.getType().equals("D")){
+            System.out.println("AHORA SI");
+        } else {
+            if (act.getType().equals("o")){
+                if (dire.equals("ARRIBA") || dire.equals("ABAJO")){
+                    verX(act);
+                } else {
+                    verY(act);
+                }
+            } else {
+                switch (dire) {
+                    case "ARRIBA":
+                        sim(act.getArriba());
+                        break;
+                    case "ABAJO":
+                        sim(act.getAbajo());
+                        break;
+                    case "DERECHA":
+                        sim(act.getDerecha());
+                        break;
+                    case "IZQ":
+                        sim(act.getIzquierda());
+                        break;
+                }
+            }
+        }
+    }
+
+    public void verY(Node act){
+        if (act.getArriba()!=null && act.getArriba().getType().equals("||")){
+            dire = "ARRIBA";
+        } else if (act.getAbajo()!=null && act.getAbajo().getType().equals("||")) {
+            dire = "ABAJO";
+        }
+    }
+
+    public void verX(Node act) {
+        if (act.getDerecha()!=null && act.getDerecha().getType().equals("=")) {
+            dire = "DERECHA";
+        } else if (act.getIzquierda()!= null && act.getIzquierda().getType().equals("=")) {
+            dire = "IZQUIERDA";
+        }
+    }
+
 
 
 }
@@ -126,7 +196,7 @@ public Node  verificarposy(Node act){
         return null;
 
     }
-    public Node  verificarposx(Node act){
+    public Node  verificarpo(Node act){
 
         if((act.getDerecha()!=null) && act.getDerecha().getType().equals("X")){
             return act.getDerecha();
@@ -205,3 +275,5 @@ public Node  verificarposy(Node act){
         }
     }
  */
+
+
